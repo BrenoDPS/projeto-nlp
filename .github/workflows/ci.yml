@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: Recall Probability Pipeline
 
 on:
   push:

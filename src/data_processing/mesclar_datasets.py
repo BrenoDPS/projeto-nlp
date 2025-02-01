@@ -11,7 +11,7 @@ from pathlib import Path
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("../../data/logs/merge_logs.log"), logging.StreamHandler()]
+    handlers=[logging.FileHandler("data/logs/merge_logs.log"), logging.StreamHandler()]
 )
 
 def validar_df(df: pd.DataFrame, col_esp: list):
@@ -24,16 +24,17 @@ def carregar_csv(path: Path, col_esp: list):
     try:
         df = pd.read_csv(
             path,
-            dtype=str,          # Preserva dados brutos
-            encoding='utf-8',
-            parse_dates=['LDATE'],
-            infer_datetime_format=True
+            dtype=str,
+            encoding='utf-8'
         )
         
         # Validação do DataFrame
         if not validar_df(df, col_esp):
             falt = set(col_esp) - set(df.columns)
-            raise ValueError(f"Colunas faltando: {falt}")
+            raise ValueError(f"Colunas faltantes: {falt}")
+        
+        if 'LDATE' in df.columns:
+            df['LDATE'] = pd.to_datetime(df['LDATE'], format='%Y%m%d', errors='coerce')
             
         logging.info(f"CSV carregado: {path.name} | Registros: {len(df):,}")
         return df
