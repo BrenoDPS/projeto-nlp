@@ -1,8 +1,9 @@
-# Documentação Projeto
+# Documentação Detector de Recalls
 
 Primeiro passo: a organização e estrutura do projeto escolhida foi-se baseada no conceito Cookiecutter;
 Segundo passo: foi-se criado um script para transformar o dataset no formato ".txt" para o formato ".csv";
 Terceiro passo: foi-se filtrado e eliminado os dados antes de 2014 no primeiro dataset, de modo que apenas os dados de 2014 a 2024 foram selecionados para análise e treino;
+Quarto passo: foi-se mesclado os três datasets para melhor análise e desenvolvimento do modelo preditivo;
 
 ## Commands
 
