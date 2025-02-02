@@ -11,8 +11,12 @@ from pathlib import Path
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("data/logs/merge_logs.log"), logging.StreamHandler()],
+    handlers=[logging.FileHandler("logs/merge_logs.log"), logging.StreamHandler()],
 )
+
+
+def validar_data(data_str: str):
+    return len(data_str) == 8 and data_str.isdigit()
 
 
 def validar_df(df: pd.DataFrame, col_esp: list):

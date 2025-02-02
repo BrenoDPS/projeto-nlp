@@ -16,7 +16,7 @@ logging.basicConfig(
 DATA_DE_CORTE = pd.to_datetime("2014-01-01")
 
 
-def carrega_dados(entrada: Path) -> pd.DataFrame:
+def carrega_dados(entrada: Path):
     """Carrega o CSV e converte 'LDATE' para datetime."""
     df = pd.read_csv(
         entrada, parse_dates=["LDATE"], dayfirst=False, infer_datetime_format=True
@@ -32,15 +32,13 @@ def carrega_dados(entrada: Path) -> pd.DataFrame:
 def filtra_dados(df: pd.DataFrame) -> pd.DataFrame:
     """Filtra dados anteriores a 2014-01-01 e remove datas inválidas."""
     # Filtrar datas válidas e >= DATA_DE_CORTE
-    df_filt = df[df["LDATE"] >= DATA_DE_CORTE]
+    df_filt = df[df["LDATE"] >= DATA_DE_CORTE].copy()
 
     # Remover registros com datas inválidas (NaT)
-    tam_original = len(df)
-    tam_filt = len(df_filt)
-    tam_final = tam_original - tam_filt
+    rem_inval = len(df) - len(df_filt)
 
     logging.info(
-        f"Registros removidos: {tam_final} " f"({tam_final/tam_original:.1%} do total)"
+        f"Registros removidos: {rem_inval} " f"({rem_inval/len(df):.1%} do total)"
     )
 
     return df_filt
@@ -55,6 +53,9 @@ def main():
         # Carregar e filtrar
         df = carrega_dados(entrada)
         df_filt = filtra_dados(df)
+
+        # converte datetime para string
+        df_filt["LDATE"] = df_filt["LDATE"].dt.strftime("%Y%m%d")
 
         # Salvar
         saida.parent.mkdir(parents=True, exist_ok=True)
